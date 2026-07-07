@@ -72,4 +72,12 @@ class User extends Authenticatable
   {
     return $this->isEditor() || $this->hasAdminRights();
   }
+
+  // ---------------------------------------------------------------------------------------
+  // active status label
+  // ---------------------------------------------------------------------------------------
+  public function isActiveLabel(): string
+  {
+    return $this->is_active ? 'Ενεργός' : 'Ανενεργός';
+  }
 }
