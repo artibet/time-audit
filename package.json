@@ -8,15 +8,24 @@
   },
   "devDependencies": {
     "@artibet/react-mui-components": "^3.10.0",
-    "concurrently": "^9.0.1",
-    "laravel-vite-plugin": "^3.1",
-    "vite": "^8.0.0"
-  },
-  "dependencies": {
+    "@artibet/react-sidebar-layout": "^1.15.0",
     "@inertiajs/react": "^3.6.0",
     "@inertiajs/vite": "^3.6.0",
     "@vitejs/plugin-react": "^6.0.3",
+    "concurrently": "^9.0.1",
+    "laravel-vite-plugin": "^3.1",
+    "nprogress": "^0.2.0",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
-  }
+    "react-dom": "^19.2.7",
+    "react-hook-form": "^7.81.0",
+    "vite": "^8.0.0",
+    "yup": "^1.7.1",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fontsource/roboto": "^5.2.5",
+    "@mui/icons-material": "^6.4.7",
+    "@mui/material": "^6.4.7",
+    "@hookform/resolvers": "^5.4.0"
+  },
+  "dependencies": {}
 }
