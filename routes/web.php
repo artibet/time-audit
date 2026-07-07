@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-
-Route::get('/', function () {
-  return Inertia::render('Test');
-});
+// ---------------------------------------------------------------------------------------
+// Partial routes
+// ---------------------------------------------------------------------------------------
+require __DIR__ . '/web_partials/root.php';
+require __DIR__ . '/web_partials/fortify.php';
