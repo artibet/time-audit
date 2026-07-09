@@ -2,7 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\UploadFile;
+use App\Models\User;
+use App\Policies\UploadFilePolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
@@ -30,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
   // ---------------------------------------------------------------------------------------
   private function registerPolicies(): void
   {
-    //
+    Gate::policy(User::class, UserPolicy::class);
+    Gate::policy(UploadFile::class, UploadFilePolicy::class);
   }
 }

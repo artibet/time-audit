@@ -110,7 +110,7 @@ export const CreateModalForm = ({
     >
       <DialogTitle sx={{ pb: 1 }}>
         <Stack direction="row" spacing={2} alignItems="center">
-          <Box sx={{ bgcolor: 'primary.light', color: 'primary.main', p: 1, borderRadius: 2, display: 'flex' }}>
+          <Box sx={{ bgcolor: 'primary.main', color: 'white', p: 1, borderRadius: 2, display: 'flex' }}>
             <PersonAddAlt1Rounded />
           </Box>
           <Box>

@@ -31,22 +31,6 @@ const Index = ({ policy, url, roles }) => {
   }
 
   // ---------------------------------------------------------------------------------------
-  // Submit handler
-  // ---------------------------------------------------------------------------------------
-  const handleSubmit = (data) => {
-    setIsLoading(true)
-    router.post('/users', {
-      ...data,
-      roles: data.roles.map(role => role.id)
-    }, {
-      onFinish: () => {
-        setIsLoading(false)
-        setShowForm(false)
-      }
-    })
-  }
-
-  // ---------------------------------------------------------------------------------------
   // Table columns
   // ---------------------------------------------------------------------------------------
   const columns = React.useMemo(() => [
