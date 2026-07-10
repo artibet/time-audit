@@ -16,7 +16,7 @@ return new class extends Migration
       $table->string('descr', 255);
       $table->dateTime('starts_at');
       $table->dateTime('ends_at');
-      $table->unsignedBigInteger('file_size');
+      $table->unsignedBigInteger('file_size')->default(0);
       $table->unsignedInteger('employees_count');
       $table->timestamps();
     });

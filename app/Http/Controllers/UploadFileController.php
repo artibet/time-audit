@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\UploadFile;
 use App\Paginators\UploadFilePaginator;
+use App\Services\UploadFileService;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
@@ -43,11 +46,48 @@ class UploadFileController extends Controller
   {
     Gate::authorize('create', UploadFile::class);
 
+    $processor = new UploadFileService();
+
     // Validate 
     $request->validate([
       'descr' => 'required',
       'file' => 'required|file'
     ]);
+
+    try {
+      $data = $processor->process($request->file->getPathname());
+    } catch (Exception $e) {
+      return back()->with('error', $e->getMessage());
+    }
+
+    try {
+
+      // Create the master recored
+      $uploadFile = UploadFile::create([
+        'descr' => $request->descr,
+        'starts_at' => $data['starts_at'],
+        'ends_at' => $data['ends_at'],
+        'employees_count' => $data['employees_count']
+      ]);
+
+      // Upload the file and set the file_size
+      $media = $uploadFile->addMediaFromRequest('file')->toMediaCollection('file');
+      $uploadFile->update([
+        'file_size' => $media->size
+      ]);
+
+      // Εισαγωγή των γραμμών στον πίνακα upload_file_rows
+      // TODO
+
+      // Commit and return to show page
+      DB::commit();
+      return redirect()->route('upload-files.show', $uploadFile->id)->with('success', 'Το αρχείο κινήσεων εισήχθη με επιτυχία!');
+    } catch (Exception $e) {
+      if (isset($media)) {
+        $media->delete();
+        return back()->with('error', 'Σφάλμα κατά την αποθήκευση: ' . $e->getMessage());
+      }
+    }
   }
 
   /**
