@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Employee;
 use Carbon\Carbon;
+use DateTimeZone;
 use Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -165,13 +166,12 @@ class UploadFileService
           try {
             if (is_numeric($value)) {
               // 1. Μετατροπή του Excel αριθμού σε native PHP DateTime (έρχεται ως UTC από το PhpSpreadsheet)
-              $nativeDt = ExcelDate::excelToDateTimeObject($value);
+              $timezone = new DateTimeZone('Europe/Athens');
+              $nativeDt = ExcelDate::excelToDateTimeObject($value, $timezone);
 
               // 2. Μετατροπή σε Carbon instance
               $carbonDate = Carbon::instance($nativeDt);
-
-              // 3. Αλλαγή του timezone σε Europe/Athens ΧΩΡΙΣ να πειραχτεί η ημερομηνία/ώρα
-              $rowData[$key] = $carbonDate->shiftTimezone('Europe/Athens');
+              $rowData[$key] = $carbonDate;
             } else {
               // Αν είναι string (π.χ. "2026-07-11" ή "11/07/2026"), το κάνουμε parse απευθείας στην ώρα Ελλάδος
               $rowData[$key] = Carbon::parse($value, 'Europe/Athens');
@@ -185,13 +185,11 @@ class UploadFileService
           try {
             if (is_numeric($value)) {
               // 1. Το Excel επιστρέφει native PHP DateTime σε UTC (π.χ. 08:00 UTC)
-              $nativeDt = ExcelDate::excelToDateTimeObject($value);
-
+              $timezone = new DateTimeZone('Europe/Athens');
+              $nativeDt = ExcelDate::excelToDateTimeObject($value, $timezone);
               // 2. Το μετατρέπουμε σε Carbon, κρατώντας το UTC αρχικά
               $carbonTime = Carbon::instance($nativeDt);
-
-              // 3. Μετακινούμε το timezone σε Europe/Athens ΧΩΡΙΣ να αλλάξουν οι δείκτες του ρολογιού (μένει 08:00)
-              $rowData[$key] = $carbonTime->shiftTimezone('Europe/Athens');
+              $rowData[$key] = $carbonTime;
             } else {
               // Αν είναι string (π.χ. "08:30"), το κάνουμε parse κατευθείαν στην ώρα Ελλάδος
               $rowData[$key] = Carbon::parse($value, 'Europe/Athens');

@@ -117,7 +117,7 @@ class UploadFileController extends Controller
             'lastname'       => $row['lastname'],
             'firstname'      => $row['firstname'],
             'card_no'        => $row['card_no'],
-            'punched_at'     => $row['punched_at'],
+            'punched_at'     => $row['punched_at']->toDateTimeString(),
           ];
         }
 
