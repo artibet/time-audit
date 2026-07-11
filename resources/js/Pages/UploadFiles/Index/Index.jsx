@@ -1,6 +1,6 @@
 import React from 'react'
 import { router } from '@inertiajs/react'
-import { formatDateTime } from '@artibet/react-mui-components/utils'
+import { formatDateTime, formatFloat } from '@artibet/react-mui-components/utils'
 import { Card, CardContent } from '@mui/material'
 import { ServerSideTable } from '@artibet/react-mui-components/tables'
 import { AuthLayout } from '@/Layouts/AuthLayout'
@@ -57,6 +57,7 @@ const Index = ({ policy, url, roles }) => {
     {
       id: 'file_size',
       label: 'Μέγεθος Αρχείου',
+      render: row => `${formatFloat(row.file_size / 1024, 2)} Kb`,
       align: 'right',
     },
     {
