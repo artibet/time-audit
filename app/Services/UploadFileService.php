@@ -163,10 +163,19 @@ class UploadFileService
 
         case 'date':
           try {
-            // Αντικαθιστούμε το raw string/number με έτοιμο Carbon instance
-            $rowData[$key] = is_numeric($value)
-              ? Carbon::instance(ExcelDate::excelToDateTimeObject($value))->setTimezone('Europe/Athens')->startOfDay()
-              : Carbon::parse($value)->setTimezone('Europe/Athens')->startOfDay();
+            if (is_numeric($value)) {
+              // 1. Μετατροπή του Excel αριθμού σε native PHP DateTime (έρχεται ως UTC από το PhpSpreadsheet)
+              $nativeDt = ExcelDate::excelToDateTimeObject($value);
+
+              // 2. Μετατροπή σε Carbon instance
+              $carbonDate = Carbon::instance($nativeDt);
+
+              // 3. Αλλαγή του timezone σε Europe/Athens ΧΩΡΙΣ να πειραχτεί η ημερομηνία/ώρα
+              $rowData[$key] = $carbonDate->shiftTimezone('Europe/Athens');
+            } else {
+              // Αν είναι string (π.χ. "2026-07-11" ή "11/07/2026"), το κάνουμε parse απευθείας στην ώρα Ελλάδος
+              $rowData[$key] = Carbon::parse($value, 'Europe/Athens');
+            }
           } catch (\Exception $e) {
             throw new \Exception("Σφάλμα στη γραμμή {$rowNumber}: Η τιμή '{$value}' στη στήλη '{$columnNameForUser}' δεν είναι έγκυρη ημερομηνία.");
           }
@@ -174,10 +183,19 @@ class UploadFileService
 
         case 'time':
           try {
-            // Αντικαθιστούμε το raw string/number με έτοιμο Carbon instance
-            $rowData[$key] = is_numeric($value)
-              ? Carbon::instance(ExcelDate::excelToDateTimeObject($value))->setTimezone('Europe/Athens')
-              : Carbon::parse($value)->setTimezone('Europe/Athens');
+            if (is_numeric($value)) {
+              // 1. Το Excel επιστρέφει native PHP DateTime σε UTC (π.χ. 08:00 UTC)
+              $nativeDt = ExcelDate::excelToDateTimeObject($value);
+
+              // 2. Το μετατρέπουμε σε Carbon, κρατώντας το UTC αρχικά
+              $carbonTime = Carbon::instance($nativeDt);
+
+              // 3. Μετακινούμε το timezone σε Europe/Athens ΧΩΡΙΣ να αλλάξουν οι δείκτες του ρολογιού (μένει 08:00)
+              $rowData[$key] = $carbonTime->shiftTimezone('Europe/Athens');
+            } else {
+              // Αν είναι string (π.χ. "08:30"), το κάνουμε parse κατευθείαν στην ώρα Ελλάδος
+              $rowData[$key] = Carbon::parse($value, 'Europe/Athens');
+            }
           } catch (\Exception $e) {
             throw new \Exception("Σφάλμα στη γραμμή {$rowNumber}: Η τιμή '{$value}' στη στήλη '{$columnNameForUser}' δεν είναι έγκυρη ώρα.");
           }
