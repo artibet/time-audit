@@ -54,12 +54,15 @@ class UploadFileController extends Controller
       'file' => 'required|file'
     ]);
 
+    // Process the file
     try {
       $data = $processor->process($request->file->getPathname());
+      dd($data);
     } catch (Exception $e) {
       return back()->with('error', $e->getMessage());
     }
 
+    // Insert
     try {
 
       // Create the master recored

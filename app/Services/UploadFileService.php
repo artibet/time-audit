@@ -184,7 +184,25 @@ class UploadFileService
 
         case 'string':
         default:
-          $rowData[$key] = trim($value);
+          $trimmedValue = trim($value);
+
+          // Ειδική διαχείριση για τη στήλη της κατεύθυνσης (direction)
+          if ($key === 'direction') {
+            // Μετατροπή σε πεζά για να πιάσουμε όλες τις περιπτώσεις (π.χ. Είσοδος, ΕΙΣΟΔΟΣ)
+            $lowerVal = mb_strtolower($trimmedValue, 'UTF-8');
+
+            if (in_array($lowerVal, ['είσοδος', 'εισοδος', 'ε', 'in'])) {
+              $rowData[$key] = 'in';
+            } elseif (in_array($lowerVal, ['έξοδος', 'εξοδος', 'ξ', 'out'])) {
+              $rowData[$key] = 'out';
+            } else {
+              // Αν βρεθεί κάτι άκυρο (π.χ. "Άγνωστο" ή λάθος χαρακτήρες), πετάμε Exception
+              throw new \Exception("Σφάλμα στη γραμμή {$rowNumber}: Μη έγκυρη τιμή στην στήλη 'Κατάσταση' (βρέθηκε: '{$trimmedValue}').");
+            }
+          } else {
+            // Για τα υπόλοιπα strings (firstname, lastname), απλά κάνουμε trim
+            $rowData[$key] = $trimmedValue;
+          }
           break;
       }
     }
