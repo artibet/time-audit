@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\UploadFile;
 use App\Paginators\UploadFilePaginator;
 use App\Services\UploadFileService;
@@ -57,13 +58,39 @@ class UploadFileController extends Controller
     // Process the file
     try {
       $data = $processor->process($request->file->getPathname());
-      dd($data);
     } catch (Exception $e) {
       return back()->with('error', $e->getMessage());
     }
 
+    // Start database
+    DB::beginTransaction();
+
     // Insert
     try {
+
+      // Εισαγωγή ή ενημέρωση εργαζομένων
+      $employeesToUpsert = [];
+      foreach ($data['rows'] as $row) {
+        $employeesToUpsert[$row['am']] = [
+          'am'         => $row['am'],
+          'lastname'   => $row['lastname'],
+          'firstname'  => $row['firstname'],
+          'card_no'    => $row['card_no'],
+          'created_at' => now(),
+          'updated_at' => now(),
+        ];
+      }
+      if (!empty($employeesToUpsert)) {
+        Employee::upsert(
+          array_values($employeesToUpsert),
+          ['am'], // Μοναδικό κλειδί
+          ['lastname', 'firstname', 'card_no', 'updated_at'] // Ανανέωση στοιχείων αν υπάρχουν
+        );
+      }
+
+      // Fetch των IDs των εργαζομένων για να κάνουμε το Foreign Key mapping
+      $ams = array_keys($employeesToUpsert);
+      $employeeMap = Employee::whereIn('am', $ams)->pluck('id', 'am')->toArray();
 
       // Create the master recored
       $uploadFile = UploadFile::create([
@@ -75,21 +102,42 @@ class UploadFileController extends Controller
 
       // Upload the file and set the file_size
       $media = $uploadFile->addMediaFromRequest('file')->toMediaCollection('file');
-      $uploadFile->update([
-        'file_size' => $media->size
-      ]);
+      $uploadFile->update(['file_size' => $media->size]);
 
       // Εισαγωγή των γραμμών στον πίνακα upload_file_rows
-      // TODO
+      if (!empty($data['rows'])) {
+        $punchesToInsert = [];
+        foreach ($data['rows'] as $row) {
+          $punchesToInsert[] = [
+            'upload_file_id' => $uploadFile->id,
+            'employee_id'    => $employeeMap[$row['am']],
+            'direction'      => $row['direction'],
+            'clock_code'     => $row['clock_code'],
+            'am'             => $row['am'],
+            'lastname'       => $row['lastname'],
+            'firstname'      => $row['firstname'],
+            'card_no'        => $row['card_no'],
+            'punched_at'     => $row['punched_at'],
+          ];
+        }
+
+        // Bulk insert in chunks of 500 to keep memory footprint safe and performant
+        foreach (array_chunk($punchesToInsert, 500) as $chunk) {
+          DB::table('punches')->insert($chunk);
+        }
+      }
 
       // Commit and return to show page
       DB::commit();
-      return redirect()->route('upload-files.show', $uploadFile->id)->with('success', 'Το αρχείο κινήσεων εισήχθη με επιτυχία!');
+      return redirect()
+        ->route('upload-files.show', $uploadFile->id)
+        ->with('success', 'Το αρχείο κινήσεων εισήχθη με επιτυχία!');
     } catch (Exception $e) {
+      DB::rollBack();
       if (isset($media)) {
         $media->delete();
-        return back()->with('error', 'Σφάλμα κατά την αποθήκευση: ' . $e->getMessage());
       }
+      return back()->with('error', 'Σφάλμα κατά την αποθήκευση: ' . $e->getMessage());
     }
   }
 

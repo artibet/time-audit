@@ -27,6 +27,8 @@ class Show extends JsonResource
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
 
+      // punches are served ssp
+
       'policy' => [
         'update' => Gate::allows('update', $this->resource),
         'delete' => Gate::allows('delete', $this->resource),

@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Employee;
+use App\Models\Punch;
 use App\Models\UploadFile;
 use App\Models\User;
 use App\Policies\EmployeePolicy;
+use App\Policies\PunchPolicy;
 use App\Policies\UploadFilePolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -40,5 +42,6 @@ class AppServiceProvider extends ServiceProvider
     Gate::policy(User::class, UserPolicy::class);
     Gate::policy(UploadFile::class, UploadFilePolicy::class);
     Gate::policy(Employee::class, EmployeePolicy::class);
+    Gate::policy(Punch::class, PunchPolicy::class);
   }
 }

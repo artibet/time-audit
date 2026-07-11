@@ -24,6 +24,8 @@ class View extends JsonResource
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
 
+      // punches are served ssp
+
       'url' => [
         'show' => route('upload-files.show', $this->id),
       ]

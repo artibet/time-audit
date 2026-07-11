@@ -22,7 +22,11 @@ class Employee extends Model
   // Relations
   // ---------------------------------------------------------------------------------------
 
-  // TODO
+  // punches
+  public function punches()
+  {
+    return $this->hasMany(Punch::class, 'employee_id', 'id');
+  }
 
   // ---------------------------------------------------------------------------------------
   // Fullname

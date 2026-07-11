@@ -30,4 +30,14 @@ class UploadFile extends Model implements HasMedia
       ->useDisk('media_private')
       ->singleFile();
   }
+
+  // ---------------------------------------------------------------------------------------
+  // Relations
+  // ---------------------------------------------------------------------------------------
+
+  // punches
+  public function punches()
+  {
+    return $this->hasMany(Punch::class, 'upload_file_id', 'id');
+  }
 }

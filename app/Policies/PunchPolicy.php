@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Employee;
+use App\Models\Punch;
 use App\Models\User;
 
-class EmployeePolicy
+class PunchPolicy
 {
   /**
    * Determine whether the user can view any models.
@@ -18,7 +18,7 @@ class EmployeePolicy
   /**
    * Determine whether the user can view the model.
    */
-  public function view(User $user, Employee $employee): bool
+  public function view(User $user, Punch $punch): bool
   {
     return $user->hasEditorRights();
   }
@@ -34,7 +34,7 @@ class EmployeePolicy
   /**
    * Determine whether the user can update the model.
    */
-  public function update(User $user, Employee $employee): bool
+  public function update(User $user, Punch $punch): bool
   {
     return $user->hasEditorRights();
   }
@@ -42,14 +42,8 @@ class EmployeePolicy
   /**
    * Determine whether the user can delete the model.
    */
-  public function delete(User $user, Employee $employee): bool
+  public function delete(User $user, Punch $punch): bool
   {
-    if (!$user->hasEditorRights()) return false;
-
-    // Δεν θα πρέπει να έχει εγγραφές σε αρχείο κινήσεων
-    if ($employee->punches()->exists()) return false;
-
-    // ok
-    return true;
+    return $user->hasEditorRights();
   }
 }
