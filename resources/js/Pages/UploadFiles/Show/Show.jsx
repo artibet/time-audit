@@ -1,0 +1,51 @@
+import React from 'react'
+import { AuthLayout } from '@/Layouts/AuthLayout'
+import { Breadcrumbs, FlashMessages } from '@artibet/react-mui-components/inertiajs'
+import { PageHeader, PageTitle } from '@artibet/react-mui-components'
+import { Box, Tab, Tabs } from '@mui/material'
+import { Identity } from './Identity/Identity'
+import { Punches } from './Punches/Punches'
+
+export const Show = ({ upload_file }) => {
+
+  // ---------------------------------------------------------------------------------------
+  // State
+  // ---------------------------------------------------------------------------------------
+  const [tabValue, setTabValue] = React.useState('identity')
+
+  // ---------------------------------------------------------------------------------------
+  // JSX
+  // ---------------------------------------------------------------------------------------
+  return (
+    <>
+      <FlashMessages />
+      <PageTitle title='Προβολή Αρχείου Κινήσεων' />
+      <Breadcrumbs />
+      <PageHeader
+        title={upload_file.descr}
+        // globalActions={<DeleteAction employee={employee} />}
+        createdAt={upload_file.created_at}
+        updatedAt={upload_file.updated_at}
+      />
+
+      {/* Tabs */}
+      <Box sx={{ marginTop: 2, width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={tabValue} onChange={(_, value) => setTabValue(value)}>
+            <Tab sx={{ fontSize: 16 }} label='ΣΤΟΙΧΕΙΑ ΑΡΧΕΙΟΥ' value='identity' />
+            <Tab sx={{ fontSize: 16 }} label='ΚΙΝΗΣΕΙΣ ΚΑΡΤΑΣ' value='punches' />
+          </Tabs>
+        </Box>
+      </Box>
+
+      {/* Tab panels */}
+      {tabValue === 'identity' && <Identity />}
+      {tabValue === 'punches' && <Punches />}
+    </>
+  )
+}
+
+
+// Layout and export
+Show.layout = page => <AuthLayout children={page} title="Προβολή Αρχείου Κινήσεων" />
+export default Show

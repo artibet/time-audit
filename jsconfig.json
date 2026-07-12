@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
-    "jsx": "preserve",
-    "checkJs": false
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": [
+        "./resources/js/*"
+      ]
+    }
   },
   "exclude": [
     "node_modules",
-    "dist",
-    "build"
+    "public"
   ]
 }

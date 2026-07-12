@@ -5,20 +5,20 @@ namespace App\Paginators;
 use App\Models\Views\PunchView;
 use Artibet\Laralib\Abstracts\PaginatorBase;
 use Illuminate\Database\Eloquent\Builder;
-use App\Http\Resources\Punch\View as PunchViewResource;
 use Illuminate\Http\Request;
+use App\Http\Resources\Punch\View as PunchViewResource;
 
-class EmployeePunchPaginator extends PaginatorBase
+class UploadFilePunchPaginator extends PaginatorBase
 {
-  private int $employeeId;
+  private int $uploadFileId;
 
   // ---------------------------------------------------------------------------------------
-  // Override constructor to get employee_id
+  // Override constructor to get upload_file_id
   // ---------------------------------------------------------------------------------------
-  public function __construct(Request $request, int $employeeId)
+  public function __construct(Request $request, int $uploadFileId)
   {
     parent::__construct($request);
-    $this->employeeId = $employeeId;
+    $this->uploadFileId = $uploadFileId;
   }
 
   // ---------------------------------------------------------------------------------------
@@ -27,12 +27,13 @@ class EmployeePunchPaginator extends PaginatorBase
   protected function columns(): array
   {
     return [
-      ['id' => 'punch_year', 'type' => 'number'],
-      ['id' => 'punch_month_name', 'type' => 'string'],
-      ['id' => 'punch_day', 'type' => 'number'],
+      ['id' => 'am', 'type' => 'string'],
+      ['id' => 'lastname', 'type' => 'string'],
+      ['id' => 'firstname', 'type' => 'string'],
       ['id' => 'clock_code', 'type' => 'string'],
+      ['id' => 'card_no', 'type' => 'string'],
       ['id' => 'direction_label', 'type' => 'string'],
-      ['id' => 'punch_time_string', 'type' => 'string'],
+      ['id' => 'punched_at', 'type' => 'date'],
     ];
   }
 
@@ -41,7 +42,7 @@ class EmployeePunchPaginator extends PaginatorBase
   // ---------------------------------------------------------------------------------------
   protected function query(): Builder
   {
-    return PunchView::where('employee_id', $this->employeeId);
+    return PunchView::where('upload_file_id', $this->uploadFileId);
   }
 
   // ---------------------------------------------------------------------------------------

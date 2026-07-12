@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\UploadFile;
 use App\Paginators\UploadFilePaginator;
+use App\Paginators\UploadFilePunchPaginator;
 use App\Services\UploadFileService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
+use App\Http\Resources\UploadFile\Show as UploadFileShowResource;
 
 class UploadFileController extends Controller
 {
@@ -166,7 +168,18 @@ class UploadFileController extends Controller
    */
   public function show(UploadFile $uploadFile)
   {
-    //
+    Gate::authorize('view', $uploadFile);
+
+    // breadcrumb
+    $breadcrumbs = [
+      ['label' => 'Αρχεία Κινήσεων', 'url' => route('upload-files.index')],
+      ['label' => $uploadFile->descr, 'url' => null],
+    ];
+
+    return Inertia::render('UploadFiles/Show/Show', [
+      'upload_file' => new UploadFileShowResource($uploadFile),
+      'breadcrumbs' => $breadcrumbs
+    ]);
   }
 
   /**
@@ -182,7 +195,16 @@ class UploadFileController extends Controller
    */
   public function update(Request $request, UploadFile $uploadFile)
   {
-    //
+    Gate::authorize('update', $uploadFile);
+
+    // Get posted data
+    $field = $request->field;
+    $value = $request->value;
+
+    // Upload, save and return back
+    $uploadFile->$field = $value;
+    $uploadFile->save();
+    return back();
   }
 
   /**
@@ -200,5 +222,14 @@ class UploadFileController extends Controller
   {
     Gate::authorize('viewAny', UploadFile::class);
     return (new UploadFilePaginator($request))->response();
+  }
+
+  // ---------------------------------------------------------------------------------------
+  // Server side pagination for employee panches
+  // ---------------------------------------------------------------------------------------
+  public function sspPunches(Request $request, UploadFile $uploadFile)
+  {
+    Gate::authorize('viewAny', UploadFile::class);
+    return (new UploadFilePunchPaginator($request, $uploadFile->id))->response();
   }
 }
