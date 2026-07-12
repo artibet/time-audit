@@ -232,4 +232,16 @@ class UploadFileController extends Controller
     Gate::authorize('viewAny', UploadFile::class);
     return (new UploadFilePunchPaginator($request, $uploadFile->id))->response();
   }
+
+  // ---------------------------------------------------------------------------------------
+  // Download media file
+  // ---------------------------------------------------------------------------------------
+  public function downloadMedia(UploadFile $uploadFile)
+  {
+    Gate::authorize('view', $uploadFile);
+
+    $media = $uploadFile->getFirstMedia('file');
+
+    return response()->download($media->getPath());
+  }
 }

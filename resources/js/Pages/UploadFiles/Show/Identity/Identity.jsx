@@ -1,5 +1,6 @@
-import { DateTimeProperty, PropertyGroup, StringProperty } from '@artibet/react-mui-components/properties'
+import { DateTimeProperty, FileProperty, PropertyGroup, StringProperty } from '@artibet/react-mui-components/properties'
 import { usePage } from '@inertiajs/react'
+import { UploadFile } from '@mui/icons-material'
 import React from 'react'
 
 export const Identity = () => {
@@ -51,6 +52,17 @@ export const Identity = () => {
         editable={false}
         required={false}
         placeholder='-----'
+      />
+
+      {/* media file */}
+      <FileProperty
+        label='Αρχείο'
+        exists={Boolean(upload_file.media)}
+        fileName={`${upload_file.media?.file_name} (${upload_file.media?.human_readable_size})`}
+        editable={false}
+        required={true}
+        downloadUrl={upload_file.media?.url?.download}
+        hasDivider={false}
       />
 
     </PropertyGroup>

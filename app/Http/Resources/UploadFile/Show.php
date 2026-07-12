@@ -5,6 +5,7 @@ namespace App\Http\Resources\UploadFile;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\UploadFile\Media as UploadFileMediaResource;
 
 class Show extends JsonResource
 {
@@ -24,6 +25,8 @@ class Show extends JsonResource
       'employees_count' => $this->employees_count,
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
+
+      'media' => new UploadFileMediaResource($this->getFirstMedia('file')),
 
       // punches are served ssp
 

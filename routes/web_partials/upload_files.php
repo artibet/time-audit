@@ -12,4 +12,7 @@ Route::prefix('/upload-files')->middleware('auth')->group(function () {
   Route::get('/{uploadFile}', [UploadFileController::class, 'show'])->name('upload-files.show');
   Route::put('/{uploadFile}', [UploadFileController::class, 'update'])->name('upload-files.update');
   Route::delete('/{uploadFile}', [UploadFileController::class, 'destroy'])->name('upload-files.destroy');
+
+  // media
+  Route::get('/{uploadFile}/download-media', [UploadFileController::class, 'downloadMedia'])->name('upload-files.download-media');
 });
