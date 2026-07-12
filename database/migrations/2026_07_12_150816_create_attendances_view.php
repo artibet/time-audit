@@ -18,6 +18,7 @@ return new class extends Migration
       CREATE VIEW v_attendances AS
       (
         SELECT
+          CONCAT(v_punches.employee_id, '-', v_punches.punch_date_string) AS id,
           v_punches.employee_id employee_id,
           employees.lastname lastname,
           employees.firstname firstname,
@@ -72,7 +73,7 @@ return new class extends Migration
           v_punches.punch_day,
           v_punches.punch_month_name,
           v_punches.punch_date_string
-      )    
+      )  
     ");
   }
 

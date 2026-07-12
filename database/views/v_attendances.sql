@@ -7,7 +7,7 @@ DROP VIEW IF EXISTS v_attendances
 CREATE VIEW v_attendances AS
 (
   SELECT
-  CONCAT(v_punches.employee_id, '-', v_punches.punch_date_string) AS id,
+    CONCAT(v_punches.employee_id, '-', v_punches.punch_date_string) AS id,
     v_punches.employee_id employee_id,
     employees.lastname lastname,
     employees.firstname firstname,
