@@ -35,6 +35,7 @@ class Show extends JsonResource
       ],
 
       'url' => [
+        'ssp_punches' => route('employees.ssp-punches', $this->id),
         'update' => route('employees.update', $this->id),
         'delete' => route('employees.destroy', $this->id),
       ],

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "jsx": "preserve",
+    "checkJs": false
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build"
+  ]
+}

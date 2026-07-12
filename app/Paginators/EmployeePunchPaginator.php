@@ -6,10 +6,20 @@ use App\Models\Views\PunchView;
 use Artibet\Laralib\Abstracts\PaginatorBase;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\Punch\View as PunchViewResource;
+use Illuminate\Http\Request;
 
 class EmployeePunchPaginator extends PaginatorBase
 {
   private int $employeeId;
+
+  // ---------------------------------------------------------------------------------------
+  // Override constructor to pass employee_id
+  // ---------------------------------------------------------------------------------------
+  public function __construct(Request $request, int $employeeId)
+  {
+    parent::__construct($request);
+    $this->employeeId = $employeeId;
+  }
 
   // ---------------------------------------------------------------------------------------
   // Override abstract method columns()

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use App\Http\Resources\Employee\Show as EmployeeShowResource;
+use App\Models\Punch;
+use App\Paginators\EmployeePunchPaginator;
 
 class EmployeeController extends Controller
 {
@@ -145,5 +147,14 @@ class EmployeeController extends Controller
   {
     Gate::authorize('viewAny', Employee::class);
     return (new EmployeePaginator($request))->response();
+  }
+
+  // ---------------------------------------------------------------------------------------
+  // Server side pagination for employee panches
+  // ---------------------------------------------------------------------------------------
+  public function sspPunches(Request $request, Employee $employee)
+  {
+    Gate::authorize('viewAny', Punch::class);
+    return (new EmployeePunchPaginator($request, $employee->id))->response();
   }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Punch;
 
+use App\Enums\PunchDirectionEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,6 +21,7 @@ class View extends JsonResource
       'employee_id' => $this->employee_id,
       'direction' => $this->direction,
       'direction_label' => $this->direction_label,
+      'direction_color' => PunchDirectionEnum::from($this->direction)->color(),
       'clock_code' => $this->clock_code,
       'am' => $this->am,
       'lastname' => $this->lastname,
@@ -28,7 +30,7 @@ class View extends JsonResource
       'punched_at' => $this->punched_at,
       'punch_year' => $this->punch_year,
       'punch_month' => $this->punch_month,
-      'punch_month' => $this->punch_month_name,
+      'punch_month_name' => $this->punch_month_name,
       'punch_day' => $this->punch_day,
       'punch_hour' => $this->punch_hour,
       'punch_minute' => $this->punch_minute,
