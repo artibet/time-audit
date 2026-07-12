@@ -217,7 +217,9 @@ class UploadFileController extends Controller
    */
   public function destroy(UploadFile $uploadFile)
   {
-    //
+    Gate::authorize('delete', $uploadFile);
+    $uploadFile->delete();
+    return redirect()->route('upload-files.index')->with('success', "Το αρχείο κινήσεων '{$uploadFile->descr}' διαγράφηκε με επιτυχία!");
   }
 
   // ---------------------------------------------------------------------------------------

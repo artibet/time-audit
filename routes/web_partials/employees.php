@@ -8,6 +8,7 @@ Route::prefix('/employees')->middleware('auth')->group(function () {
   Route::get('', [EmployeeController::class, 'index'])->name('employees.index');
   Route::get('/ssp', [EmployeeController::class, 'ssp'])->name('employees.ssp');
   Route::get('/{employee}/ssp-punches', [EmployeeController::class, 'sspPunches'])->name('employees.ssp-punches');
+  Route::get('/{employee}/ssp-attendances', [EmployeeController::class, 'sspAttendances'])->name('employees.ssp-attendances');
   Route::post('/', [EmployeeController::class, 'store'])->name('employees.store');
   Route::get('/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
   Route::put('/{employee}', [EmployeeController::class, 'update'])->name('employees.update');

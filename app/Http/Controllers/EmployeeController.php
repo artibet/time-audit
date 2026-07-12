@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use App\Http\Resources\Employee\Show as EmployeeShowResource;
 use App\Models\Punch;
+use App\Paginators\EmployeeAttendancePaginator;
 use App\Paginators\EmployeePunchPaginator;
 
 class EmployeeController extends Controller
@@ -156,5 +157,14 @@ class EmployeeController extends Controller
   {
     Gate::authorize('viewAny', Punch::class);
     return (new EmployeePunchPaginator($request, $employee->id))->response();
+  }
+
+  // ---------------------------------------------------------------------------------------
+  // Server side pagination for employee attendances
+  // ---------------------------------------------------------------------------------------
+  public function sspAttendances(Request $request, Employee $employee)
+  {
+    Gate::authorize('viewAny', Punch::class);
+    return (new EmployeeAttendancePaginator($request, $employee->id))->response();
   }
 }

@@ -5,6 +5,7 @@ import { PageHeader, PageTitle } from '@artibet/react-mui-components'
 import { Box, Tab, Tabs } from '@mui/material'
 import { Identity } from './Identity/Identity'
 import { Punches } from './Punches/Punches'
+import { DeleteAction } from '@/Components/upload_files/DeleteAction'
 
 export const Show = ({ upload_file }) => {
 
@@ -23,7 +24,7 @@ export const Show = ({ upload_file }) => {
       <Breadcrumbs />
       <PageHeader
         title={upload_file.descr}
-        // globalActions={<DeleteAction employee={employee} />}
+        globalActions={<DeleteAction uploadFile={upload_file} />}
         createdAt={upload_file.created_at}
         updatedAt={upload_file.updated_at}
       />

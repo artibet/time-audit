@@ -6,6 +6,8 @@ import { DeleteAction } from '../../../Components/empoloyees/DeleteAction'
 import { Box, Tab, Tabs } from '@mui/material'
 import { Identity } from './Identity/Identity'
 import { Punches } from './Punches/Punches'
+import { Attendances } from './Attendances/Attendances'
+
 
 export const Show = ({ employee }) => {
 
@@ -35,6 +37,7 @@ export const Show = ({ employee }) => {
           <Tabs value={tabValue} onChange={(_, value) => setTabValue(value)}>
             <Tab sx={{ fontSize: 16 }} label='ΣΤΟΙΧΕΙΑ ΕΡΓΑΖΟΜΕΝΟΥ' value='identity' />
             <Tab sx={{ fontSize: 16 }} label='ΚΙΝΗΣΕΙΣ ΚΑΡΤΑΣ' value='punches' />
+            <Tab sx={{ fontSize: 16 }} label='ΠΑΡΟΥΣΙΟΛΟΓΙΟ' value='attendances' />
           </Tabs>
         </Box>
       </Box>
@@ -42,6 +45,7 @@ export const Show = ({ employee }) => {
       {/* Tab panels */}
       {tabValue === 'identity' && <Identity />}
       {tabValue === 'punches' && <Punches />}
+      {tabValue === 'attendances' && <Attendances />}
     </>
   )
 }
