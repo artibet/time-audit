@@ -117,7 +117,7 @@ class UploadFileController extends Controller
             'lastname'       => $row['lastname'],
             'firstname'      => $row['firstname'],
             'card_no'        => $row['card_no'],
-            'punched_at'     => $row['punched_at']->toDateTimeString(),
+            'punched_at'     => $row['punched_at'],
           ];
         }
 
@@ -125,6 +125,26 @@ class UploadFileController extends Controller
         foreach (array_chunk($punchesToInsert, 500) as $chunk) {
           DB::table('punches')->insert($chunk);
         }
+      }
+
+      // Update the last_in and last_out columns into employees
+      $employeeIds = array_values($employeeMap);
+      if (!empty($employeeIds)) {
+        // Perform a bulk update using a subquery for peak performance
+        DB::table('employees as e')
+          ->whereIn('e.id', $employeeIds)
+          ->update([
+            'last_in' => DB::raw("(
+                SELECT MAX(punched_at) 
+                FROM punches 
+                WHERE employee_id = e.id AND direction = 'in'
+            )"),
+            'last_out' => DB::raw("(
+                SELECT MAX(punched_at) 
+                FROM punches 
+                WHERE employee_id = e.id AND direction = 'out'
+            )")
+          ]);
       }
 
       // Commit and return to show page

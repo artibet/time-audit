@@ -6,6 +6,7 @@ import { AuthLayout } from '@/Layouts/AuthLayout'
 import { FlashMessages } from '@artibet/react-mui-components/inertiajs'
 import { useModalForm } from '@artibet/react-mui-components/hooks';
 import { CreateModalForm } from '../../../Components/empoloyees/CreateModalForm'
+import { formatDateTime } from '@artibet/react-mui-components/utils'
 
 const Index = ({ policy, url }) => {
 
@@ -50,10 +51,12 @@ const Index = ({ policy, url }) => {
     {
       id: 'last_in',
       label: 'Τελευταία Είσοδος',
+      render: row => formatDateTime(row.last_in)
     },
     {
       id: 'last_out',
       label: 'Τελευταία Έξοδος',
+      render: row => formatDateTime(row.last_out)
     },
 
   ], [])

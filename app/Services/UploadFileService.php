@@ -44,7 +44,7 @@ class UploadFileService
       $this->validateAndSanitizeRow($rowData, $row);
 
       // Συνδυάζουμε την ημερομηνία και την ώρα σε ένα τελικό punched_at timestamp
-      $punchedAt = $rowData['date']->copy()->setTimeFrom($rowData['time']);
+      $punchedAt = $rowData['date']->copy()->setTimeFrom($rowData['time'])->utc();
       $rowData['punched_at'] = $punchedAt;
 
       // Update min/max date
