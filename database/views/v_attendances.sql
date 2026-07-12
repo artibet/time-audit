@@ -57,6 +57,8 @@ CREATE VIEW v_attendances AS
     v_punches.employee_id,
     employees.lastname,
     employees.firstname,
+    employees.shift_start,
+    employees.shift_end,
     v_punches.punch_year,
     v_punches.punch_month,
     v_punches.punch_day,
