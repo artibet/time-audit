@@ -21,6 +21,8 @@ return new class extends Migration
           firstname,
           am,
           card_no,
+          shift_start,
+          shift_end,
           last_in,
           last_out,
           created_at,

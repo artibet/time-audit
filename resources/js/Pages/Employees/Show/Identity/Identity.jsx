@@ -1,4 +1,4 @@
-import { DateTimeProperty, PropertyGroup, StringProperty } from '@artibet/react-mui-components/properties'
+import { DateTimeProperty, PropertyGroup, StringProperty, TimeProperty } from '@artibet/react-mui-components/properties'
 import { usePage } from '@inertiajs/react'
 import React from 'react'
 
@@ -56,6 +56,28 @@ export const Identity = () => {
         fieldName='card_no'
         required
         modalTitle='Αριθμός Κάρτας'
+        updateUrl={employee.url.update}
+      />
+
+      {/* shift_start */}
+      <TimeProperty
+        label='Ώρα Προσέλευσης'
+        value={employee.shift_start}
+        editable={true}
+        required={true}
+        fieldName='shift_start'
+        modalTitle='Ώρα Προσέλευσης'
+        updateUrl={employee.url.update}
+      />
+
+      {/* shift_end */}
+      <TimeProperty
+        label='Ώρα Αποχώρησης'
+        value={employee.shift_end}
+        editable={true}
+        required={true}
+        fieldName='shift_end'
+        modalTitle='Ώρα Αποχώρησης'
         updateUrl={employee.url.update}
       />
 

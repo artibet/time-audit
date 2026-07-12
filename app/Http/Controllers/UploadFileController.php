@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use App\Http\Resources\UploadFile\Show as UploadFileShowResource;
+use Carbon\Carbon;
 
 class UploadFileController extends Controller
 {
@@ -72,12 +73,16 @@ class UploadFileController extends Controller
 
       // Εισαγωγή ή ενημέρωση εργαζομένων
       $employeesToUpsert = [];
+      $defaultShiftStart = Carbon::parse('07:00:00', 'Europe/Athens')->setTimezone('UTC')->toTimeString();
+      $defaultShiftEnd   = Carbon::parse('15:00:00', 'Europe/Athens')->setTimezone('UTC')->toTimeString();
       foreach ($data['rows'] as $row) {
         $employeesToUpsert[$row['am']] = [
           'am'         => $row['am'],
           'lastname'   => $row['lastname'],
           'firstname'  => $row['firstname'],
           'card_no'    => $row['card_no'],
+          'shift_start' => $defaultShiftStart,
+          'shift_end' => $defaultShiftEnd,
           'created_at' => now(),
           'updated_at' => now(),
         ];

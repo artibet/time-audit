@@ -17,6 +17,8 @@ return new class extends Migration
       $table->string('firstname', 255);
       $table->string('am', 255)->unique();
       $table->string('card_no', 255);
+      $table->time('shift_start');
+      $table->time('shift_end');
       $table->dateTime('last_in')->nullable();
       $table->dateTime('last_out')->nullable();
       $table->timestamps();
