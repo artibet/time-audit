@@ -31,7 +31,6 @@ CREATE VIEW v_attendances AS
       employees.shift_end
     ) AS shift_minutes,
 
-    -- total minutes worked
     -- Total minutes worked (Returns NULL if punch_in or punch_out is missing)
     TIMESTAMPDIFF(
       MINUTE, 
@@ -42,13 +41,15 @@ CREATE VIEW v_attendances AS
     -- overtime
     -- Τα λεπτά που δούλεψε μετά το shift_end
     GREATEST(
-      TIMESTAMPDIFF(
-        MINUTE, 
-        employees.shift_end, 
-        TIME(MAX(CASE WHEN direction = 'out' THEN punched_at END))
-      ), 
-      0
-    ) AS overtime_minutes
+    FLOOR(  
+      (
+        TIME_TO_SEC(TIME(CONVERT_TZ(MAX(CASE WHEN direction = 'out' THEN punched_at END), 'UTC', 'Europe/Athens'))) 
+        - 
+        TIME_TO_SEC(TIME(CONVERT_TZ(employees.shift_end, 'UTC', 'Europe/Athens')))
+      ) / 60
+    ) ,
+    0
+  ) AS overtime_minutes
 
   FROM
     v_punches 

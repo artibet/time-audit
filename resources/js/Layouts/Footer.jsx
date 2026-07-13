@@ -5,7 +5,7 @@ export const Footer = () => {
   return (
     <Box sx={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Typography>
-        © {(new Date()).getFullYear()} ΔΙ.ΠΑ.Ε. - Τμήμα Πληροφορικής Σερρών
+        © {(new Date()).getFullYear()} ΔΙ.ΠΑ.Ε. - Τμήμα Μηχανικών Πληροφορικής, Υπολογιστών και Τηλεπικοινωνιών - Πανεπιστημιούπολη Σερρών
       </Typography>
     </Box>
   )

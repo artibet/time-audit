@@ -73,8 +73,8 @@ class UploadFileController extends Controller
 
       // Εισαγωγή ή ενημέρωση εργαζομένων
       $employeesToUpsert = [];
-      $defaultShiftStart = Carbon::parse('07:00:00', 'Europe/Athens')->setTimezone('UTC')->toTimeString();
-      $defaultShiftEnd   = Carbon::parse('15:00:00', 'Europe/Athens')->setTimezone('UTC')->toTimeString();
+      $defaultShiftStart = Carbon::parse('07:00:00', 'Europe/Athens')->setTimezone('UTC');
+      $defaultShiftEnd   = Carbon::parse('15:00:00', 'Europe/Athens')->setTimezone('UTC');
       foreach ($data['rows'] as $row) {
         $employeesToUpsert[$row['am']] = [
           'am'         => $row['am'],

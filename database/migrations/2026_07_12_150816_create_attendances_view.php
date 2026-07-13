@@ -42,7 +42,6 @@ return new class extends Migration
             employees.shift_end
           ) AS shift_minutes,
 
-          -- total minutes worked
           -- Total minutes worked (Returns NULL if punch_in or punch_out is missing)
           TIMESTAMPDIFF(
             MINUTE, 
@@ -52,14 +51,17 @@ return new class extends Migration
 
           -- overtime
           -- Τα λεπτά που δούλεψε μετά το shift_end
+
           GREATEST(
-            TIMESTAMPDIFF(
-              MINUTE, 
-              employees.shift_end, 
-              TIME(MAX(CASE WHEN direction = 'out' THEN punched_at END))
-            ), 
-            0
-          ) AS overtime_minutes
+          FLOOR(  
+            (
+              TIME_TO_SEC(TIME(CONVERT_TZ(MAX(CASE WHEN direction = 'out' THEN punched_at END), 'UTC', 'Europe/Athens'))) 
+              - 
+              TIME_TO_SEC(TIME(CONVERT_TZ(employees.shift_end, 'UTC', 'Europe/Athens')))
+            ) / 60
+          ) ,
+          0
+        ) AS overtime_minutes
 
         FROM
           v_punches 
@@ -75,7 +77,7 @@ return new class extends Migration
           v_punches.punch_day,
           v_punches.punch_month_name,
           v_punches.punch_date_string
-      )  
+      )     
     ");
   }
 

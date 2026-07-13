@@ -1,6 +1,6 @@
 import React from 'react'
 import { router, usePage } from '@inertiajs/react';
-import { Dashboard, DateRange, Domain, FactCheck, FileUploadOutlined, GroupsOutlined, LocationOn, MyLocation, PeopleAlt, PestControl, SettingsSuggest, Shower } from '@mui/icons-material';
+import { AccessTime, FileUploadOutlined, GroupsOutlined, PeopleAlt, SettingsSuggest } from '@mui/icons-material';
 
 export const getSidebarMenuItems = () => {
 
@@ -18,6 +18,28 @@ export const getSidebarMenuItems = () => {
     active: () => url.startsWith("/upload-files"),
     hidden: () => !auth.user.has_editor_rights,
   }
+
+
+  // ---------------------------------------------------------------------------------------
+  // Αναφορές - section
+  // ---------------------------------------------------------------------------------------
+  const reportsSection = {
+    label: "Αναφορές",
+    section: true,
+    hidden: () => !auth.user.has_editor_rights
+  }
+
+  // ---------------------------------------------------------------------------------------
+  // Εργαζόμενοι
+  // ---------------------------------------------------------------------------------------
+  const overtimeMenu = {
+    label: 'Υπερωρίες',
+    icon: <AccessTime />,
+    onClick: () => router.get('/reports-overtime'),
+    active: () => url.startsWith("/reports-overtime"),
+    hidden: () => !auth.user.has_editor_rights,
+  }
+
 
   // ---------------------------------------------------------------------------------------
   // Διαχείριση - section
@@ -68,6 +90,9 @@ export const getSidebarMenuItems = () => {
 
     uploadFiles,
     employeesMenu,
+
+    reportsSection,
+    overtimeMenu,
 
     administrationSection,
     usersMenu,
