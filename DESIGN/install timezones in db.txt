@@ -1,0 +1,7 @@
+windows:
+mysql -u root -p mysql < "sql file of mysql or mariadb"
+
+ubuntu:
+mariadb-tzinfo-to-sql /usr/share/zoneinfo | mariadb -u root -p mysql
+or
+mysql-tzinfo-to-sql /usr/share/zoneinfo | mysql -u root -p mysql
