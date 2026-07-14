@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class RootController extends Controller
+class ReportsController extends Controller
 {
   // ---------------------------------------------------------------------------------------
-  // Landing page
+  // Υπερωρίες (overtime)
   // ---------------------------------------------------------------------------------------
-  public function root()
+  public function overtime()
   {
-    return redirect()->route('upload-files.index');
+    return Inertia::render('UnderConstructionPage', [
+      'title' => 'Αναφορές - Υπερωρίες'
+    ]);
   }
 }

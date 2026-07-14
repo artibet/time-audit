@@ -35,8 +35,8 @@ export const getSidebarMenuItems = () => {
   const overtimeMenu = {
     label: 'Υπερωρίες',
     icon: <AccessTime />,
-    onClick: () => router.get('/reports-overtime'),
-    active: () => url.startsWith("/reports-overtime"),
+    onClick: () => router.get('/reports/overtime'),
+    active: () => url.startsWith("/reports/overtime"),
     hidden: () => !auth.user.has_editor_rights,
   }
 
@@ -96,7 +96,7 @@ export const getSidebarMenuItems = () => {
 
     administrationSection,
     usersMenu,
-    paramsMenu,
+    // paramsMenu,
   ]
 
 }
