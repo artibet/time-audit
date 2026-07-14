@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "artibet/laralib",
-            "version": "v1.0.9",
+            "version": "v1.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/artibet/laralib.git",
-                "reference": "8f4532139a54b7eb9dd7957f29a60ac822723062"
+                "reference": "57f7c64dc34b0f4f174403e2cee6da76b1bd7cc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/artibet/laralib/zipball/8f4532139a54b7eb9dd7957f29a60ac822723062",
-                "reference": "8f4532139a54b7eb9dd7957f29a60ac822723062",
+                "url": "https://api.github.com/repos/artibet/laralib/zipball/57f7c64dc34b0f4f174403e2cee6da76b1bd7cc8",
+                "reference": "57f7c64dc34b0f4f174403e2cee6da76b1bd7cc8",
                 "shasum": ""
             },
             "require": {
@@ -54,9 +54,9 @@
             "description": "A collection of Laravel staff",
             "support": {
                 "issues": "https://github.com/artibet/laralib/issues",
-                "source": "https://github.com/artibet/laralib/tree/v1.0.9"
+                "source": "https://github.com/artibet/laralib/tree/v1.0.10"
             },
-            "time": "2026-05-04T07:16:05+00:00"
+            "time": "2026-07-14T09:15:53+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
