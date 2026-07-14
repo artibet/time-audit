@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Employee;
 use Carbon\Carbon;
 use DateTimeZone;
 use Exception;
@@ -79,15 +78,15 @@ class UploadFileService
   protected function getRequiredColumns(): array
   {
     return [
-      'lastname'      => ['type' => 'string', 'aliases' => ['Επώνυμο', 'ΕΠΩΝΥΜΟ', 'lastname']],
-      'firstname'     => ['type' => 'string', 'aliases' => ['Όνομα', 'ΟΝΟΜΑ', 'firstname']],
-      'am'            => ['type' => 'string', 'aliases' => ['ΑΜ', 'αμ', 'AM', 'am']],
-      'clock_code'    => ['type' => 'string', 'aliases' => ['Κωδικός ρολογιού', 'ΚΩΔΙΚΟΣ ΡΟΛΟΓΙΟΥ', 'clock_code']],
-      'card_no'       => ['type' => 'string', 'aliases' => ['Κάρτα', 'ΚΑΡΤΑ', 'card_no']],
-      'date'          => ['type' => 'date', 'aliases' => ['Ημερομηνία', 'ΗΜΕΡΟΜΗΝΙΑ', 'date']],
-      'time'          => ['type' => 'time', 'aliases' => ['Ώρα', 'ΩΡΑ', 'time']],
-      'direction'     => ['type' => 'string', 'aliases' => ['Κατάσταση', 'κατάσταση', 'direction']],
-      'shift_string'  => ['type' => 'string', 'aliases' => ['Βάρδια', 'ΒΑΡΔΙΑ', 'shift_string']],
+      'lastname'      => ['type' => 'string', 'aliases' => ['Επώνυμο', 'ΕΠΩΝΥΜΟ', 'lastname'], 'required' => true],
+      'firstname'     => ['type' => 'string', 'aliases' => ['Όνομα', 'ΟΝΟΜΑ', 'firstname'], 'required' => true],
+      'am'            => ['type' => 'string', 'aliases' => ['ΑΜ', 'αμ', 'AM', 'am'], 'required' => true],
+      'clock_code'    => ['type' => 'string', 'aliases' => ['Κωδικός ρολογιού', 'ΚΩΔΙΚΟΣ ΡΟΛΟΓΙΟΥ', 'clock_code'], 'required' => true],
+      'card_no'       => ['type' => 'string', 'aliases' => ['Κάρτα', 'ΚΑΡΤΑ', 'card_no'], 'required' => true],
+      'date'          => ['type' => 'date', 'aliases' => ['Ημερομηνία', 'ΗΜΕΡΟΜΗΝΙΑ', 'date'], 'required' => true],
+      'time'          => ['type' => 'time', 'aliases' => ['Ώρα', 'ΩΡΑ', 'time'], 'required' => true],
+      'direction'     => ['type' => 'string', 'aliases' => ['Κατάσταση', 'κατάσταση', 'direction'], 'required' => true],
+      'shift_string'  => ['type' => 'string', 'aliases' => ['Βάρδια', 'ΒΑΡΔΙΑ', 'shift_string'], 'required' => true],
     ];
   }
 
@@ -151,7 +150,7 @@ class UploadFileService
       $columnNameForUser = $config['aliases'][1] ?? $key; // Το ελληνικό όνομα για το error
 
       // 1. Έλεγχος αν είναι κενό
-      if (is_null($value) || trim($value) === '') {
+      if ((is_null($value) || trim($value) === '') && $config['required']) {
         throw new \Exception("Σφάλμα στη γραμμή {$rowNumber}: Η στήλη '{$columnNameForUser}' είναι κενή.");
       }
 
