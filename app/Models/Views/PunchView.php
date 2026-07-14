@@ -12,6 +12,8 @@ class PunchView extends Model
   protected function casts(): array
   {
     return [
+      'shift_start' => 'datetime',
+      'shift_end' => 'datetime',
       'punched_at' => 'datetime',
     ];
   }

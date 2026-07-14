@@ -32,6 +32,7 @@ class UploadFilePunchPaginator extends PaginatorBase
       ['id' => 'firstname', 'type' => 'string'],
       ['id' => 'clock_code', 'type' => 'string'],
       ['id' => 'card_no', 'type' => 'string'],
+      ['id' => 'shift_string', 'type' => 'string'],
       ['id' => 'direction_label', 'type' => 'string'],
       ['id' => 'punched_at', 'type' => 'date'],
     ];

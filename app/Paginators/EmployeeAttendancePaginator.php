@@ -31,10 +31,12 @@ class EmployeeAttendancePaginator extends PaginatorBase
       ['id' => 'punch_year', 'type' => 'number'],
       ['id' => 'punch_month_name', 'type' => 'string'],
       ['id' => 'punch_day', 'type' => 'number'],
-      ['id' => 'shift_minutes', 'type' => 'number', 'footer' => ['type' => 'sum', 'format' => 'integer']],
+      ['id' => 'shift_string', 'type' => 'string'],
       ['id' => 'punch_in', 'type' => 'date'],
       ['id' => 'punch_out', 'type' => 'date'],
+      ['id' => 'shift_minutes', 'type' => 'number', 'footer' => ['type' => 'sum', 'format' => 'integer']],
       ['id' => 'worked_minutes', 'type' => 'number', 'footer' => ['type' => 'sum', 'format' => 'integer']],
+      ['id' => 'work_balance_minutes', 'type' => 'number', 'footer' => ['type' => 'sum', 'format' => 'integer']],
       ['id' => 'overtime_minutes', 'type' => 'number', 'footer' => ['type' => 'sum', 'format' => 'integer']],
     ];
   }

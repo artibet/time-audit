@@ -9,8 +9,6 @@ CREATE VIEW v_employees AS
     firstname,
     am,
     card_no,
-    shift_start,
-    shift_end,
     last_in,
     last_out,
     created_at,

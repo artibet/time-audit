@@ -22,8 +22,6 @@ class Show extends JsonResource
       'firstname' => $this->firstname,
       'fullname' => $this->fullname(),
       'card_no' => $this->card_no,
-      'shift_start' => $this->shift_start,
-      'shift_end' => $this->shift_end,
       'last_in' => $this->last_in,
       'last_out' => $this->last_out,
       'created_at' => $this->created_at,

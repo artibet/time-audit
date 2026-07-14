@@ -42,6 +42,10 @@ export const Punches = () => {
       label: 'Αρ. Κάρτας',
     },
     {
+      id: 'shift_string',
+      label: 'Ωράριο'
+    },
+    {
       id: 'direction_label',
       label: 'Κατάσταση',
       render: row => <DirectionChip label={row.direction_label} color={row.direction_color} />,

@@ -59,28 +59,6 @@ export const Identity = () => {
         updateUrl={employee.url.update}
       />
 
-      {/* shift_start */}
-      <TimeProperty
-        label='Ώρα Προσέλευσης'
-        value={employee.shift_start}
-        editable={true}
-        required={true}
-        fieldName='shift_start'
-        modalTitle='Ώρα Προσέλευσης'
-        updateUrl={employee.url.update}
-      />
-
-      {/* shift_end */}
-      <TimeProperty
-        label='Ώρα Αποχώρησης'
-        value={employee.shift_end}
-        editable={true}
-        required={true}
-        fieldName='shift_end'
-        modalTitle='Ώρα Αποχώρησης'
-        updateUrl={employee.url.update}
-      />
-
       {/* last_in */}
       <DateTimeProperty
         label='Τελευταία Είσοδος'

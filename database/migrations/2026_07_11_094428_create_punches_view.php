@@ -25,6 +25,9 @@ return new class extends Migration
           punches.lastname lastname,
           punches.firstname firstname,
           punches.card_no card_no,
+          punches.shift_string shift_string,
+          punches.shift_start shift_start,
+          punches.shift_end shift_end,
           punches.punched_at punched_at,
           YEAR(CONVERT_TZ(punches.punched_at, 'UTC', 'Europe/Athens')) AS punch_year,
           MONTH(CONVERT_TZ(punches.punched_at, 'UTC', 'Europe/Athens')) AS punch_month,
@@ -55,7 +58,7 @@ return new class extends Migration
           END AS direction_label
         FROM
           punches
-      )  
+      )   
     ");
   }
 

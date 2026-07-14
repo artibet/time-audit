@@ -24,6 +24,9 @@ class Index extends JsonResource
       'lastname' => $this->lastname,
       'firstname' => $this->firstname,
       'card_no' => $this->card_no,
+      'shift_string' => $this->shift_string,
+      'shift_start' => $this->shift_start,
+      'shift_end' => $this->shift_end,
       'punched_at' => $this->punched_at,
     ];
   }

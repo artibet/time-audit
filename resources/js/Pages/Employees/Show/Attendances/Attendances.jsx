@@ -47,6 +47,10 @@ export const Attendances = () => {
       label: 'Ημέρα',
     },
     {
+      id: 'shift_string',
+      label: 'Ωράριο'
+    },
+    {
       id: 'punch_in',
       label: 'Προσήλθε',
       render: row => formatTime(row.punch_in)
@@ -67,8 +71,13 @@ export const Attendances = () => {
       align: 'right'
     },
     {
+      id: 'work_balance_minutes',
+      label: 'Απόκλιση',
+      align: 'right'
+    },
+    {
       id: 'overtime_minutes',
-      label: 'Έξτρα',
+      label: 'Υπερωρίες',
       align: 'right'
     },
   ], [])

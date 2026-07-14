@@ -7,6 +7,7 @@ import { Box, Tab, Tabs } from '@mui/material'
 import { Identity } from './Identity/Identity'
 import { Punches } from './Punches/Punches'
 import { Attendances } from './Attendances/Attendances'
+import { usePage } from '@inertiajs/react'
 
 
 export const Show = ({ employee }) => {
@@ -15,6 +16,7 @@ export const Show = ({ employee }) => {
   // State
   // ---------------------------------------------------------------------------------------
   const [tabValue, setTabValue] = React.useState('identity')
+  const { auth } = usePage().props
 
   // ---------------------------------------------------------------------------------------
   // JSX
@@ -37,7 +39,10 @@ export const Show = ({ employee }) => {
           <Tabs value={tabValue} onChange={(_, value) => setTabValue(value)}>
             <Tab sx={{ fontSize: 16 }} label='ΣΤΟΙΧΕΙΑ ΕΡΓΑΖΟΜΕΝΟΥ' value='identity' />
             <Tab sx={{ fontSize: 16 }} label='ΚΙΝΗΣΕΙΣ ΚΑΡΤΑΣ' value='punches' />
-            <Tab sx={{ fontSize: 16 }} label='ΠΑΡΟΥΣΙΟΛΟΓΙΟ' value='attendances' />
+            {
+              auth.user.has_admin_rights &&
+              <Tab sx={{ fontSize: 16 }} label='ΠΑΡΟΥΣΙΟΛΟΓΙΟ' value='attendances' />
+            }
           </Tabs>
         </Box>
       </Box>
@@ -45,7 +50,7 @@ export const Show = ({ employee }) => {
       {/* Tab panels */}
       {tabValue === 'identity' && <Identity />}
       {tabValue === 'punches' && <Punches />}
-      {tabValue === 'attendances' && <Attendances />}
+      {tabValue === 'attendances' && auth.user.has_admin_rights && <Attendances />}
     </>
   )
 }

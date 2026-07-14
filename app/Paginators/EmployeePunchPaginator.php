@@ -31,6 +31,7 @@ class EmployeePunchPaginator extends PaginatorBase
       ['id' => 'punch_month_name', 'type' => 'string'],
       ['id' => 'punch_day', 'type' => 'number'],
       ['id' => 'clock_code', 'type' => 'string'],
+      ['id' => 'shift_string', 'type' => 'string'],
       ['id' => 'direction_label', 'type' => 'string'],
       ['id' => 'punch_time_string', 'type' => 'string'],
     ];

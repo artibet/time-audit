@@ -21,6 +21,9 @@ return new class extends Migration
       $table->string('lastname', 255);
       $table->string('firstname', 255);
       $table->string('card_no', 255);
+      $table->string('shift_string', 255);
+      $table->time('shift_start');
+      $table->time('shift_end');
       $table->dateTime('punched_at');
     });
 

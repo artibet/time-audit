@@ -79,14 +79,15 @@ class UploadFileService
   protected function getRequiredColumns(): array
   {
     return [
-      'lastname'   => ['type' => 'string', 'aliases' => ['Επώνυμο', 'ΕΠΩΝΥΜΟ', 'lastname']],
-      'firstname'  => ['type' => 'string', 'aliases' => ['Όνομα', 'ΟΝΟΜΑ', 'firstname']],
-      'am'         => ['type' => 'string', 'aliases' => ['ΑΜ', 'αμ', 'AM', 'am']],
-      'clock_code' => ['type' => 'string', 'aliases' => ['Κωδικός ρολογιού', 'ΚΩΔΙΚΟΣ ΡΟΛΟΓΙΟΥ', 'clock_code']],
-      'card_no'    => ['type' => 'string', 'aliases' => ['Κάρτα', 'ΚΑΡΤΑ', 'card_no']],
-      'date'       => ['type' => 'date', 'aliases' => ['Ημερομηνία', 'ΗΜΕΡΟΜΗΝΙΑ', 'date']],
-      'time'       => ['type' => 'time', 'aliases' => ['Ώρα', 'ΩΡΑ', 'time']],
-      'direction'  => ['type' => 'string', 'aliases' => ['Κατάσταση', 'κατάσταση', 'direction']],
+      'lastname'      => ['type' => 'string', 'aliases' => ['Επώνυμο', 'ΕΠΩΝΥΜΟ', 'lastname']],
+      'firstname'     => ['type' => 'string', 'aliases' => ['Όνομα', 'ΟΝΟΜΑ', 'firstname']],
+      'am'            => ['type' => 'string', 'aliases' => ['ΑΜ', 'αμ', 'AM', 'am']],
+      'clock_code'    => ['type' => 'string', 'aliases' => ['Κωδικός ρολογιού', 'ΚΩΔΙΚΟΣ ΡΟΛΟΓΙΟΥ', 'clock_code']],
+      'card_no'       => ['type' => 'string', 'aliases' => ['Κάρτα', 'ΚΑΡΤΑ', 'card_no']],
+      'date'          => ['type' => 'date', 'aliases' => ['Ημερομηνία', 'ΗΜΕΡΟΜΗΝΙΑ', 'date']],
+      'time'          => ['type' => 'time', 'aliases' => ['Ώρα', 'ΩΡΑ', 'time']],
+      'direction'     => ['type' => 'string', 'aliases' => ['Κατάσταση', 'κατάσταση', 'direction']],
+      'shift_string'  => ['type' => 'string', 'aliases' => ['Βάρδια', 'ΒΑΡΔΙΑ', 'shift_string']],
     ];
   }
 
@@ -216,7 +217,29 @@ class UploadFileService
               // Αν βρεθεί κάτι άκυρο (π.χ. "Άγνωστο" ή λάθος χαρακτήρες), πετάμε Exception
               throw new \Exception("Σφάλμα στη γραμμή {$rowNumber}: Μη έγκυρη τιμή στην στήλη 'Κατάσταση' (βρέθηκε: '{$trimmedValue}').");
             }
-          } else {
+          }
+
+          // Ειδική διαχείριση για τη στήλη της βάρδιας (shift_string)
+          else if ($key === 'shift_string') {
+            if (preg_match('/(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})/', $trimmedValue, $matches)) {
+              $rowData[$key] = $trimmedValue; // Keep the original string if needed
+              $rowData['shift_start'] = Carbon::createFromFormat('H:i', $matches[1], 'Europe/Athens');
+              $rowData['shift_end']   = Carbon::createFromFormat('H:i', $matches[2], 'Europe/Athens');
+              $rowData[$key] = "{$matches[1]} - {$matches[2]}";
+            } else {
+              // Set default 
+              $defaultShiftStart = '07:00';
+              $defaultShiftEnd = '15:00';
+              $rowData['shift_start'] = Carbon::createFromFormat('H:i', $defaultShiftStart, 'Europe/Athens');
+              $rowData['shift_end'] = Carbon::createFromFormat('H:i', $defaultShiftEnd, 'Europe/Athens');
+
+              // Format shift string
+              $rowData[$key] = "{$defaultShiftStart} - {$defaultShiftEnd}";
+            }
+          }
+
+          // Για τα υπόλοιπα strings (firstname, lastname, κλπ), απλά κάνουμε trim
+          else {
             // Για τα υπόλοιπα strings (firstname, lastname), απλά κάνουμε trim
             $rowData[$key] = $trimmedValue;
           }
