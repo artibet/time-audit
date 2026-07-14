@@ -19,4 +19,14 @@ class Attendance extends Model
       'punch_out' => 'datetime',
     ];
   }
+
+  // ---------------------------------------------------------------------------------------
+  // Relations
+  // ---------------------------------------------------------------------------------------
+
+  // employee
+  public function employee()
+  {
+    return $this->belongsTo(Employee::class, 'employee_id', 'id');
+  }
 }

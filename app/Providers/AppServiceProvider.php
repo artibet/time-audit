@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Attendance;
 use App\Models\Employee;
 use App\Models\Punch;
 use App\Models\UploadFile;
 use App\Models\User;
+use App\Policies\AttendancePolicy;
 use App\Policies\EmployeePolicy;
 use App\Policies\PunchPolicy;
 use App\Policies\UploadFilePolicy;
@@ -43,5 +45,6 @@ class AppServiceProvider extends ServiceProvider
     Gate::policy(UploadFile::class, UploadFilePolicy::class);
     Gate::policy(Employee::class, EmployeePolicy::class);
     Gate::policy(Punch::class, PunchPolicy::class);
+    Gate::policy(Attendance::class, AttendancePolicy::class);
   }
 }

@@ -28,6 +28,12 @@ class Employee extends Model
     return $this->hasMany(Punch::class, 'employee_id', 'id');
   }
 
+  // attendances
+  public function attendances()
+  {
+    return $this->hasMany(Attendance::class, 'employee_id', 'id');
+  }
+
   // ---------------------------------------------------------------------------------------
   // Fullname
   // ---------------------------------------------------------------------------------------
