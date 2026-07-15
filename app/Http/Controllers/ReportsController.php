@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Reports\PeriodOvertimesExport;
 use App\Http\Resources\MonthName\Lookup as MonthNameLookupResource;
-
+use App\Services\PeriodOvertimeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -43,27 +44,12 @@ class ReportsController extends Controller
       $toMonth = (int) $request->input('month_to');
 
       // Query the v_monthly_overtimes MySQL view
-      $reportData = DB::table('v_monthly_overtimes')
-        ->select([
-          'employee_id',
-          'am',
-          'lastname',
-          'firstname',
-          DB::raw('SUM(raw_overtime_minutes) as total_raw_minutes'),
-          DB::raw('SUM(capped_overtime_minutes) as total_capped_minutes'),
-          DB::raw('ROUND(SUM(raw_overtime_minutes) / 60.0, 2) as total_raw_hours'),
-          DB::raw('ROUND(SUM(capped_overtime_minutes) / 60.0, 2) as total_capped_hours'),
-        ])
-        ->where('punch_year', $year)
-        ->whereBetween('punch_month', [$fromMonth, $toMonth])
-        ->groupBy('employee_id', 'am', 'lastname', 'firstname')
-        ->orderBy('lastname', 'asc')
-        ->orderBy('firstname', 'asc')
-        ->get();
+      $overtimeService = new PeriodOvertimeService();
+      $reportData = $overtimeService->query($year, $fromMonth, $toMonth)->get();
     }
 
     // Inertia response
-    return Inertia::render('Reports/PeriodOvertime/PeriodOvertime', [
+    return Inertia::render('Reports/PeriodOvertimes/PeriodOvertimes', [
       'report' => $reportData,
       'years' => $availableYears,
       'months' => MonthNameLookupResource::collection($months),
@@ -73,5 +59,19 @@ class ReportsController extends Controller
         'month_to' => $request->input('month_to') ? (int) $request->input('month_to') : null,
       ]
     ]);
+  }
+
+  // ---------------------------------------------------------------------------------------
+  // Period overtimes export
+  // ---------------------------------------------------------------------------------------
+  public function periodOvertimesExport(Request $request)
+  {
+    $overtimeService = new PeriodOvertimeService();
+    $year = (int) $request->input('year');
+    $fromMonth = (int) $request->input('month_from');
+    $toMonth = (int) $request->input('month_to');
+    $data = $overtimeService->query($year, $fromMonth, $toMonth)->get();
+    $export = new PeriodOvertimesExport($data);
+    return $export->download();
   }
 }

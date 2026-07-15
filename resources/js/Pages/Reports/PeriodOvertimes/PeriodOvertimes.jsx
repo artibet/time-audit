@@ -70,7 +70,7 @@ const PeriodOvertime = ({ years, months, report = [], filters }) => {
         <InitialState />
       ) : report.length > 0 ? (
         // 2. Results found
-        <OvertimesTable data={report} />
+        <OvertimesTable data={report} filters={filters} />
       ) : (
         // 3. Filters applied, but 0 results
         <EmptyState />

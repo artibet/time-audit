@@ -8,6 +8,7 @@ import { Title } from './Title'
 import { GlobalFilter } from './GlobalFilter'
 import CreateButton from './CreateButton'
 import { Footer } from './Footer'
+import { GlobalActions } from './GlobalActions'
 
 const fallbackData = []
 
@@ -164,7 +165,7 @@ export const ClientTable = ({
         }}>
           <GlobalFilter />
           <CreateButton />
-          {/* <GlobalActions />  */}
+          <GlobalActions />
         </Box>
       </Box>
 
