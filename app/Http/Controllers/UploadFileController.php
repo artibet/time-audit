@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use App\Http\Resources\UploadFile\Show as UploadFileShowResource;
-use Carbon\Carbon;
+use App\Services\AttendanceService;
+
 
 class UploadFileController extends Controller
 {
@@ -50,7 +51,8 @@ class UploadFileController extends Controller
   {
     Gate::authorize('create', UploadFile::class);
 
-    $processor = new UploadFileService();
+    $uploadFileService = new UploadFileService();
+    $attendanceService = new AttendanceService();
 
     // Validate 
     $request->validate([
@@ -60,7 +62,7 @@ class UploadFileController extends Controller
 
     // Process the file
     try {
-      $data = $processor->process($request->file->getPathname());
+      $data = $uploadFileService->process($request->file->getPathname());
     } catch (Exception $e) {
       return back()->with('error', $e->getMessage());
     }
@@ -130,6 +132,33 @@ class UploadFileController extends Controller
         // Bulk insert in chunks of 500 to keep memory footprint safe and performant
         foreach (array_chunk($punchesToInsert, 500) as $chunk) {
           DB::table('punches')->insert($chunk);
+        }
+
+        // --- INSERT INTO attendances ---
+        $attendancesToInsert = $attendanceService->process($punchesToInsert);
+        // 2. Perform bulk upsert for attendance rows in chunks of 500
+        if (!empty($attendancesToInsert)) {
+          foreach (array_chunk($attendancesToInsert, 500) as $chunk) {
+            DB::table('attendances')->upsert(
+              $chunk,
+              ['employee_id', 'punch_date'], // Unique columns to match against
+              [
+                'shift_start',
+                'shift_end',
+                'shift_string',
+                'punch_in',
+                'punch_out',
+                'punch_year',
+                'punch_month',
+                'punch_day',
+                'shift_minutes',
+                'worked_minutes',
+                'work_balance_minutes',
+                'overtime_minutes',
+                'updated_at' // Do not update created_at so the original timestamp is preserved
+              ]
+            );
+          }
         }
       }
 

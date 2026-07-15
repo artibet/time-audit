@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Employee;
 use App\Models\UploadFile;
+use App\Services\AttendanceService;
 use App\Services\UploadFileService;
 use Exception;
 use Illuminate\Console\Attributes\Description;
@@ -21,6 +22,9 @@ class ImportPunches extends Command
    */
   public function handle()
   {
+    $uploadFileService = new UploadFileService();
+    $attendanceService = new AttendanceService();
+
     // Dynamically increase memory limit to 512MB for this CLI process
     ini_set('memory_limit', '1024M');
 
@@ -57,14 +61,12 @@ class ImportPunches extends Command
       $descr = $suffix ? "{$baseName} - {$suffix}" : $baseName;
       $this->warn("Processing file: {$baseName}...");
 
-      $processor = new UploadFileService();
-
       DB::beginTransaction();
 
       try {
 
         // 1. process the file
-        $data = $processor->process($filePath);
+        $data = $uploadFileService->process($filePath);
 
         // 2. Insert or update employees
         $employeesToUpsert = [];
@@ -130,6 +132,33 @@ class ImportPunches extends Command
 
           foreach (array_chunk($punchesToInsert, 500) as $chunk) {
             DB::table('punches')->insert($chunk);
+          }
+        }
+
+        // --- INSERT INTO attendances ---
+        $attendancesToInsert = $attendanceService->process($punchesToInsert);
+        // 2. Perform bulk upsert for attendance rows in chunks of 500
+        if (!empty($attendancesToInsert)) {
+          foreach (array_chunk($attendancesToInsert, 500) as $chunk) {
+            DB::table('attendances')->upsert(
+              $chunk,
+              ['employee_id', 'punch_date'], // Unique columns to match against
+              [
+                'shift_start',
+                'shift_end',
+                'shift_string',
+                'punch_in',
+                'punch_out',
+                'punch_year',
+                'punch_month',
+                'punch_day',
+                'shift_minutes',
+                'worked_minutes',
+                'work_balance_minutes',
+                'overtime_minutes',
+                'updated_at' // Do not update created_at so the original timestamp is preserved
+              ]
+            );
           }
         }
 

@@ -102,6 +102,7 @@ export const Attendances = () => {
           onRowClick={row => { }}
           keepState={true}
           stateKey={`employees-${employee.id}-attendances`}
+          defaultSorting={[{ id: 'punch_year', desc: false }, { id: 'punch_month', desc: false }, { id: 'punch_day', desc: false }]}
         />
       </CardContent>
     </Card>

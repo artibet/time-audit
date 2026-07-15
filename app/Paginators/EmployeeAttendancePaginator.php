@@ -6,7 +6,7 @@ use Artibet\Laralib\Abstracts\PaginatorBase;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Http\Resources\Attendance\View as AttendanceViewResource;
-use App\Models\Views\AttentanceView;
+use App\Models\Views\AttendanceView;
 
 class EmployeeAttendancePaginator extends PaginatorBase
 {
@@ -46,7 +46,7 @@ class EmployeeAttendancePaginator extends PaginatorBase
   // ---------------------------------------------------------------------------------------
   protected function query(): Builder
   {
-    return AttentanceView::where('employee_id', $this->employeeId);
+    return AttendanceView::where('employee_id', $this->employeeId);
   }
 
   // ---------------------------------------------------------------------------------------

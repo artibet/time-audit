@@ -4,7 +4,7 @@ namespace App\Models\Views;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AttentanceView extends Model
+class AttendanceView extends Model
 {
   protected $table = 'v_attendances';
   public $timestamps = false;
@@ -12,10 +12,13 @@ class AttentanceView extends Model
   protected function casts(): array
   {
     return [
+      'punch_date' => 'datetime',
       'shift_start' => 'datetime',
       'shift_end' => 'datetime',
       'punch_in' => 'datetime',
-      'punch_out' => 'datetime'
+      'punch_out' => 'datetime',
+      'created_at' => 'datetime',
+      'updated_at' => 'datetime',
     ];
   }
 }
