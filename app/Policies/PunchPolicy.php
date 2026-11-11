@@ -46,4 +46,12 @@ class PunchPolicy
   {
     return $user->hasEditorRights();
   }
+
+  // ---------------------------------------------------------------------------------------
+  // count puch days view
+  // ---------------------------------------------------------------------------------------
+  public function viewCountPunchDays(User $user): bool
+  {
+    return $user->hasAdminRights();
+  }
 }

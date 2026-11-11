@@ -1,6 +1,6 @@
 import React from 'react'
 import { router, usePage } from '@inertiajs/react';
-import { AccessTime, FileUploadOutlined, GroupsOutlined, PeopleAlt, SettingsSuggest } from '@mui/icons-material';
+import { AccessTime, FileUploadOutlined, GroupsOutlined, PeopleAlt, PunchClock, SettingsSuggest } from '@mui/icons-material';
 
 export const getSidebarMenuItems = () => {
 
@@ -64,6 +64,17 @@ export const getSidebarMenuItems = () => {
   // ---------------------------------------------------------------------------------------
   // Χρήστες & Ρόλοι
   // ---------------------------------------------------------------------------------------
+  const countPunchDaysMenu = {
+    label: 'Χτυπήματα Ανά Ημέρα',
+    icon: <PunchClock />,
+    onClick: () => router.get('/punches/count-punch-days'),
+    active: () => url.startsWith("/punches/count-punch-days"),
+    hidden: () => !auth.user.has_admin_rights,
+  }
+
+  // ---------------------------------------------------------------------------------------
+  // Χρήστες & Ρόλοι
+  // ---------------------------------------------------------------------------------------
   const usersMenu = {
     label: 'Χρήστες & Ρόλοι',
     icon: <PeopleAlt />,
@@ -71,6 +82,7 @@ export const getSidebarMenuItems = () => {
     active: () => url.startsWith("/users"),
     hidden: () => !auth.user.is_superadmin,
   }
+
 
   // ---------------------------------------------------------------------------------------
   // Παράμετροι
@@ -96,6 +108,7 @@ export const getSidebarMenuItems = () => {
 
     administrationSection,
     usersMenu,
+    countPunchDaysMenu,
     // paramsMenu,
   ]
 
